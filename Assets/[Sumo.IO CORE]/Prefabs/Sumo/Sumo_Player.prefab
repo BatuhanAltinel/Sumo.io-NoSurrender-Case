@@ -32,9 +32,69 @@ Transform:
   - {fileID: 3655918771552821165}
   - {fileID: 2158604663135204580}
   - {fileID: 8348278967406438820}
+  - {fileID: 4766851174734769214}
   m_Father: {fileID: 3655918771589271555}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &3381591330665031733
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4766851174734769214}
+  - component: {fileID: 8615033540199838808}
+  - component: {fileID: 6408030123618003473}
+  m_Layer: 0
+  m_Name: Pusher
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4766851174734769214
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3381591330665031733}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.02, y: 1.07, z: 0.75}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 44671223380381620}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &8615033540199838808
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3381591330665031733}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1.18, z: 0.25}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &6408030123618003473
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3381591330665031733}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cdfdf236f90a13448b4fc87b15a810e7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  parentSumo: {fileID: 1793456827324586276}
 --- !u!1 &3655918770970288980
 GameObject:
   m_ObjectHideFlags: 0
@@ -262,8 +322,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3655918771589271555}
-  - component: {fileID: 3655918771589271554}
+  - component: {fileID: 7675629277067601932}
   - component: {fileID: 3655918771589271553}
+  - component: {fileID: 6340775194952211996}
   - component: {fileID: 1793456827324586276}
   m_Layer: 0
   m_Name: Sumo_Player
@@ -289,7 +350,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!54 &3655918771589271554
+--- !u!54 &7675629277067601932
 Rigidbody:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -318,6 +379,19 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.6, y: 0.1, z: 0.6}
   m_Center: {x: 0, y: 0.5, z: 0}
+--- !u!135 &6340775194952211996
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3655918771589271552}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.75
+  m_Center: {x: 0, y: 1.25, z: 0}
 --- !u!114 &1793456827324586276
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -330,16 +404,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f06af704ef599648986a892d95061f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _innerSumo: {fileID: 2596512238076923214}
   _name: PLAYER
   _nameText: {fileID: 3655918770970288982}
-  _scoreText: {fileID: 3655918771950343334}
-  _innerSumo: {fileID: 2596512238076923214}
-  _moveSpeed: 3
+  _feedScoreText: {fileID: 3655918771950343334}
+  _totalScore: 0
+  _moveSpeed: 5
   _RotateSpeed: 15
-  _pushForce: 500
+  _pushForce: 50
+  _pushBackForce: 30
   _currentScale: {x: 0, y: 0, z: 0}
   _normalScale: {x: 0, y: 0, z: 0}
   _scaleFactor: 0.1
+  _moveDirection: {x: 0, y: 0, z: 0}
   _joystick: {fileID: 0}
 --- !u!1 &3655918771768826860
 GameObject:
@@ -450,7 +527,7 @@ GameObject:
   - component: {fileID: 3655918771950343335}
   - component: {fileID: 3655918771950343334}
   m_Layer: 0
-  m_Name: Score Text
+  m_Name: Feed Score Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -768,7 +845,7 @@ BoxCollider:
   m_GameObject: {fileID: 5294313860472234058}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
@@ -865,7 +942,7 @@ BoxCollider:
   m_GameObject: {fileID: 8381771140114583327}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}

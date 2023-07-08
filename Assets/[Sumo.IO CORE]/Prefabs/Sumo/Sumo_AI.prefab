@@ -23,7 +23,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1159802180860997566}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: 0, y: 0.97936416, z: 0, w: 0.20210373}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -32,9 +32,69 @@ Transform:
   - {fileID: 8248763596475408951}
   - {fileID: 328195051782443086}
   - {fileID: 5725308921018740381}
+  - {fileID: 1836793564316223804}
   m_Father: {fileID: 8248763596444757401}
   m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 156.68, z: 0}
+--- !u!1 &1957664232069445880
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1836793564316223804}
+  - component: {fileID: 1516354248875470086}
+  - component: {fileID: 3510655121949980217}
+  m_Layer: 0
+  m_Name: Pusher
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1836793564316223804
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1957664232069445880}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.3, y: 1.2, z: 0.69}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 608562280217492476}
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1516354248875470086
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1957664232069445880}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cdfdf236f90a13448b4fc87b15a810e7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  parentSumo: {fileID: 2870010504453704958}
+--- !u!65 &3510655121949980217
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1957664232069445880}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1.33, z: 0.24}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &4254238329543497509
 GameObject:
   m_ObjectHideFlags: 0
@@ -128,7 +188,7 @@ BoxCollider:
   m_GameObject: {fileID: 4254238329543497509}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
@@ -225,7 +285,7 @@ BoxCollider:
   m_GameObject: {fileID: 5652929832615478079}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
@@ -240,6 +300,7 @@ GameObject:
   - component: {fileID: 8248763596444757401}
   - component: {fileID: 8248763596444757400}
   - component: {fileID: 8248763596444757403}
+  - component: {fileID: 3721065987726501944}
   - component: {fileID: 2870010504453704958}
   m_Layer: 0
   m_Name: Sumo_AI
@@ -294,6 +355,19 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.6, y: 0.1, z: 0.6}
   m_Center: {x: 0, y: 0.5, z: 0}
+--- !u!135 &3721065987726501944
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8248763596444757402}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.75
+  m_Center: {x: 0, y: 1.23, z: 0}
 --- !u!114 &2870010504453704958
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -306,16 +380,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e1ebc7f15049d34ab7db3d94dd484d5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _innerSumo: {fileID: 1159802180860997566}
   _name: SUMO_1
   _nameText: {fileID: 8248763597100703436}
-  _scoreText: {fileID: 8248763598282287420}
-  _innerSumo: {fileID: 1159802180860997566}
-  _moveSpeed: 3
-  _RotateSpeed: 0
-  _pushForce: 500
+  _feedScoreText: {fileID: 8248763598282287420}
+  _totalScore: 0
+  _moveSpeed: 5
+  _RotateSpeed: 15
+  _pushForce: 50
+  _pushBackForce: 30
   _currentScale: {x: 0, y: 0, z: 0}
   _normalScale: {x: 0, y: 0, z: 0}
   _scaleFactor: 0.1
+  _moveDirection: {x: 0, y: 0, z: 0}
+  _targetSumo: {fileID: 0}
 --- !u!1 &8248763596475408950
 GameObject:
   m_ObjectHideFlags: 0
@@ -648,7 +726,7 @@ GameObject:
   - component: {fileID: 8248763598282287421}
   - component: {fileID: 8248763598282287420}
   m_Layer: 0
-  m_Name: Score Text
+  m_Name: Feed Score Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

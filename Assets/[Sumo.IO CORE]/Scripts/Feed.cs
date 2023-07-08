@@ -5,6 +5,7 @@ using UnityEngine;
 public class Feed : MonoBehaviour
 {
     [SerializeField] float _turnSpeed;
+    bool _isSumoTouch;
 
     void Update()
     {
@@ -18,11 +19,12 @@ public class Feed : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        if(other.TryGetComponent<Sumo>(out Sumo sumo))
+        if(other.TryGetComponent<Sumo>(out Sumo sumo) && !_isSumoTouch)
         {
-            // sumo.OnScaleUp();
-            // sumo.OnScoreUp();
-            EventManager.OnFeed.Invoke(sumo);
+            _isSumoTouch = true;
+            EventManager.OnFeeding.Invoke(sumo);
+            sumo.OnScoreUpOnFeed();
+            sumo.IncreasePushPower();
             gameObject.SetActive(false);
         }
     }

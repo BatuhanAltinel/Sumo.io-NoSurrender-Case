@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using DG.Tweening;
 public class PlayerSumo : Sumo
 {
 
@@ -10,13 +10,8 @@ public class PlayerSumo : Sumo
 
     void Update()
     {
-        if(GameManager.Instance.IsState(GameState.InGame))
+        if(GameManager.Instance.IsState(GameState.InGame) && !_isCrushed)
             MoveForward();
-    }
-
-    public void SetForwardDirection(Vector2 dir)
-    {
-        _moveDirection = new Vector3(dir.x,_moveDirection.y,dir.y);
     }
 
     public override void MoveForward()
@@ -35,16 +30,29 @@ public class PlayerSumo : Sumo
         _rb.MovePosition(_rb.position + _moveDirection);
     }
 
-    public override void PushOpposite(Vector3 dir)
+    public override void OnScoreUpOnPush(Sumo sumo)
     {
         
     }
 
-    public override void OnScoreUp(Sumo sumo)
+    public override void OnScoreUpOnFeed()
     {
-        base.OnScoreUp(sumo);
+        _totalScore += _feedScore;
 
-        // EventManager.OnScoreUpdate.Invoke(_score);
+        _feedScoreText.text = "+" + _feedScore.ToString();
+        _feedScoreText.transform.gameObject.SetActive(true);
+
+
+        _feedScoreText.transform.DOLocalMoveY(1.4f,.6f).SetEase(Ease.OutSine).
+        OnComplete(() => 
+        {
+            _feedScoreText.transform.gameObject.SetActive(false);
+            _feedScoreText.transform.localPosition = new Vector3(0f,0.6f,0f);
+
+            EventManager.OnScoreUpdate.Invoke(this._totalScore);
+        });
+
+       
     }
 
 }

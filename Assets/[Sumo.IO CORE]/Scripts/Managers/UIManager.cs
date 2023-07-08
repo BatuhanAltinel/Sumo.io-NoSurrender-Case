@@ -28,17 +28,19 @@ public class UIManager : MonoBehaviour
     void OnEnable()
     {
         EventManager.OnGameStateChanged += UpdateUI;    
+        EventManager.OnScoreUpdate += UpdateScoreText;    
     }
 
     void OnDisable()
     {
         EventManager.OnGameStateChanged -= UpdateUI;
+        EventManager.OnScoreUpdate -= UpdateScoreText;
     }
 
 
     void Start()
     {
-        
+        ResetTotalSocreText();
     }
 
     void Update()
@@ -53,7 +55,7 @@ public class UIManager : MonoBehaviour
         switch (state)
         {
             case GameState.ReadyToStartGame:
-                ReseGameTimer();
+                ResetGameTimer();
                 _menuPanel.gameObject.SetActive(CloseAllPanelExceptThis());
                 // StartTimerSequence();
 
@@ -133,9 +135,14 @@ public class UIManager : MonoBehaviour
         _gameTimeText.text = second.ToString($"{minute}:00");
     }
 
-    void ReseGameTimer()
+    void ResetGameTimer()
     {
         _gameTimer = 75;
+    }
+
+    void ResetTotalSocreText()
+    {
+        _scoreText.text = "0";
     }
 
     bool CloseAllPanelExceptThis()
@@ -145,6 +152,11 @@ public class UIManager : MonoBehaviour
         _endPanel.gameObject.SetActive(false);
 
         return true;
+    }
+
+    void UpdateScoreText(int totalScore)
+    {
+        _scoreText.text = totalScore.ToString();
     }
 
 }

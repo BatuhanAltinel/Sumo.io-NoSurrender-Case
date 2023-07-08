@@ -1,23 +1,28 @@
 using UnityEngine;
 using DG.Tweening;
 using TMPro;
+using System.Collections;
 
 public abstract class Sumo : MonoBehaviour
 {
     protected Rigidbody _rb;
+    [SerializeField] protected GameObject _innerSumo;
 
     [Header("Sumo Canvas Atrributes")]
     [SerializeField] protected string _name;
     [SerializeField] protected TextMeshProUGUI _nameText;
-    [SerializeField] protected TextMeshProUGUI _scoreText;
-    protected int _score = 100;
-
-    [SerializeField] protected GameObject _innerSumo;
+    [SerializeField] protected TextMeshProUGUI _feedScoreText;
+    
+    [Header("Score Attributes")]
+    protected int _feedScore = 100;
+    protected int _pushScore = 1200;
+    public int _totalScore = 0;
 
     [Header("Force Attributes")]
     [SerializeField] protected float _moveSpeed;
     [SerializeField] protected float _RotateSpeed;
-    [SerializeField] protected float _pushForce;
+    [SerializeField] private float _pushForce;
+    [SerializeField] private float _pushBackForce;
 
     [Header("Scale Attributes")]
     [SerializeField] protected Vector3 _currentScale;
@@ -25,21 +30,19 @@ public abstract class Sumo : MonoBehaviour
     [SerializeField] protected float _scaleFactor;
 
     [Header("Movement Attributes")]
-    protected Vector3 _moveDirection;
-    protected Vector3 _moveRotation;
+    public Vector3 _moveDirection;
 
+    protected bool _isCrushed;
 
 
     void OnEnable()
     {
-        EventManager.OnFeed += OnScaleUp;
-        EventManager.OnFeed += OnScoreUp;
+        EventManager.OnFeeding += OnScaleUp;
     }
 
     void OnDisable()
     {
-        EventManager.OnFeed -= OnScaleUp;
-        EventManager.OnFeed -= OnScoreUp;
+        EventManager.OnFeeding -= OnScaleUp;
     }
 
 
@@ -61,11 +64,41 @@ public abstract class Sumo : MonoBehaviour
         _currentScale = _normalScale;
     }
 
-    public abstract void MoveForward();
-    public abstract void PushOpposite(Vector3 dir);
-    // public abstract void PushBackOnCrush();
+    public void SetSumoName(string name)
+    {
+        _name = name;
+        _nameText.text = _name;
+    }
+
+
+    public void OnPushedFrom(Sumo sumo)
+    {
+        if(!_isCrushed)
+        {
+            _isCrushed = true;
+            _rb.AddForce(sumo._moveDirection * sumo._pushForce , ForceMode.Impulse);
+        
+            ScaleShiftOnCrush();
+            StartCoroutine(WaitAfterCrush());
+        }
+        
+    }
+
+
+    public void OnPushBack()
+    {
+        if(!_isCrushed)
+        {
+            _isCrushed = true;
+            _rb.AddForce(-_moveDirection * _pushBackForce , ForceMode.Impulse);
+
+            ScaleShiftOnCrush();
+            StartCoroutine(WaitAfterCrush());
+        }
+    }
+
     
-    public void OnScaleUp(Sumo sumo)
+    private void OnScaleUp(Sumo sumo)
     {
         Vector3 _tempScale = _scaleFactor * Vector3.one;
         _currentScale += _tempScale;
@@ -73,19 +106,29 @@ public abstract class Sumo : MonoBehaviour
         sumo.transform.DOScale(_currentScale,0.3f).SetEase(Ease.OutBounce);
     }
 
-    public virtual void OnScoreUp(Sumo sumo)
+    public void IncreasePushPower()
     {
-        sumo._scoreText.text = "+" + _score.ToString();
-        _scoreText.transform.gameObject.SetActive(true);
+        _pushForce += 5;
+        Debug.Log("push force incresed.");
+    }
 
-
-        sumo._scoreText.transform.DOLocalMoveY(1.4f,.6f).SetEase(Ease.OutSine).
-        OnComplete(() => 
-        {
-            sumo._scoreText.transform.gameObject.SetActive(false);
-            sumo._scoreText.transform.localPosition = new Vector3(0f,0.6f,0f);
-        });
-
+    private void ScaleShiftOnCrush()
+    {
+        Vector3 temp = _currentScale + new Vector3(0.25f,0,0.25f);
+        transform.DOScale(temp,0.2f).SetEase(Ease.OutBounce).
+        OnComplete(() => transform.DOScale(_currentScale,0.2f).SetEase(Ease.OutBounce));
     }
     
+
+    public abstract void MoveForward();
+    public abstract void OnScoreUpOnFeed();
+    public abstract void OnScoreUpOnPush(Sumo sumo);
+
+    IEnumerator WaitAfterCrush()
+    {
+        yield return new WaitForSeconds(0.25f);
+        _isCrushed = false;
+    }
+
+
 }
