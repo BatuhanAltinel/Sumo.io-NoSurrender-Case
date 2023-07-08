@@ -7,10 +7,6 @@ public class PlayerSumo : Sumo
 
     [SerializeField] private FloatingJoystick _joystick;
 
-    protected override void Awake()
-    {
-        base.Awake();
-    }
 
     void Update()
     {
@@ -23,7 +19,7 @@ public class PlayerSumo : Sumo
         _moveDirection = new Vector3(dir.x,_moveDirection.y,dir.y);
     }
 
-    protected override void MoveForward()
+    public override void MoveForward()
     {
         _moveDirection = Vector3.zero;
         _moveDirection.x = _joystick.Horizontal * _moveSpeed * Time.deltaTime;
@@ -38,4 +34,17 @@ public class PlayerSumo : Sumo
 
         _rb.MovePosition(_rb.position + _moveDirection);
     }
+
+    public override void PushOpposite(Vector3 dir)
+    {
+        
+    }
+
+    public override void OnScoreUp(Sumo sumo)
+    {
+        base.OnScoreUp(sumo);
+
+        // EventManager.OnScoreUpdate.Invoke(_score);
+    }
+
 }

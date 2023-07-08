@@ -306,8 +306,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e1ebc7f15049d34ab7db3d94dd484d5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _name: SUMO_1
+  _nameText: {fileID: 8248763597100703436}
+  _scoreText: {fileID: 8248763598282287420}
   _innerSumo: {fileID: 1159802180860997566}
   _moveSpeed: 3
+  _RotateSpeed: 0
   _pushForce: 500
   _currentScale: {x: 0, y: 0, z: 0}
   _normalScale: {x: 0, y: 0, z: 0}
@@ -556,7 +560,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8248763597503669720}
-  m_LocalRotation: {x: 0.35836798, y: 0, z: 0, w: 0.93358046}
+  m_LocalRotation: {x: 0.3420201, y: 0, z: 0, w: 0.9396927}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -565,7 +569,7 @@ RectTransform:
   - {fileID: 8248763598282287423}
   m_Father: {fileID: 8248763596444757401}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 42, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 40, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 3.3}
@@ -649,7 +653,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &8248763598282287423
 RectTransform:
   m_ObjectHideFlags: 0
