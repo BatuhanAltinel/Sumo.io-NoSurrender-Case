@@ -411,8 +411,8 @@ MonoBehaviour:
   _totalScore: 0
   _moveSpeed: 5
   _RotateSpeed: 15
-  _pushForce: 50
-  _pushBackForce: 30
+  _pushForce: 40
+  _pushBackForce: 20
   _currentScale: {x: 0, y: 0, z: 0}
   _normalScale: {x: 0, y: 0, z: 0}
   _scaleFactor: 0.1
