@@ -30,7 +30,7 @@ public class GameManager : Singleton<GameManager>
         EventManager.OnGameStateChanged.Invoke(_gameState);
     }
 
-	public bool IsState(GameState state)
+    public bool IsState(GameState state)
     {
         return _gameState == state;
     }
