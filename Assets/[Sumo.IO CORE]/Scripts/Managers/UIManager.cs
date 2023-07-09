@@ -29,21 +29,21 @@ public class UIManager : MonoBehaviour
     {
         EventManager.OnGameStateChanged += UpdateUI;    
         EventManager.OnScoreUpdate += UpdateScoreText;   
-        EventManager.OnSumoFallDown += UpdateSumoCount; 
+        EventManager.OnSumoFallDown += UpdateSumoCountText; 
     }
 
     void OnDisable()
     {
         EventManager.OnGameStateChanged -= UpdateUI;
         EventManager.OnScoreUpdate -= UpdateScoreText;
-        EventManager.OnSumoFallDown -= UpdateSumoCount;
+        EventManager.OnSumoFallDown -= UpdateSumoCountText;
     }
 
 
     void Start()
     {
         ResetTotalScoreText();
-        UpdateSumoCount();
+        UpdateSumoCountText();
     }
 
     void Update()
@@ -61,6 +61,7 @@ public class UIManager : MonoBehaviour
                 ResetTotalScoreText();
                 ResetGameTimer();
                 SumoManager.Instance.ResetSumoCount();
+                UpdateSumoCountText();
                 _menuPanel.gameObject.SetActive(CloseAllPanelExceptThis());
             break;
 
@@ -169,7 +170,7 @@ public class UIManager : MonoBehaviour
         _scoreText.text = totalScore.ToString();
     }
 
-    void UpdateSumoCount()
+    void UpdateSumoCountText()
     {
         _sumoCountText.text = SumoManager.Instance.GetCurrentSumoCount().ToString();
     }
