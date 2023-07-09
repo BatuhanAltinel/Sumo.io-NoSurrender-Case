@@ -46,6 +46,10 @@ public abstract class Sumo : MonoBehaviour
         _normalScale = _currentScale;
     }
 
+    public abstract void Movement();
+    public abstract void OnScoreUpOnFeed();
+    public abstract void OnScoreUpOnFallTo(Sumo sumo);
+
 
     public void ResetAllAttributesOnState(GameState state)
     {
@@ -66,6 +70,11 @@ public abstract class Sumo : MonoBehaviour
     {
         _name = name;
         _nameText.text = _name;
+    }
+
+    public string GetSumoName(Sumo sumo)
+    {
+        return sumo._name;
     }
 
 
@@ -105,7 +114,7 @@ public abstract class Sumo : MonoBehaviour
     }
 
     
-    public void OnScaleUp()
+    public void ScaleUp()
     {
         Vector3 _tempScale = _scaleFactor * Vector3.one;
         _currentScale += _tempScale;
@@ -116,7 +125,6 @@ public abstract class Sumo : MonoBehaviour
     public void IncreasePushPower()
     {
         _pushForce += 2;
-        Debug.Log("push force incresed.");
     }
 
     public void ScaleShiftOnCrash()
@@ -142,10 +150,6 @@ public abstract class Sumo : MonoBehaviour
         return _pushForce;
     }
 
-    
-    public abstract void Movement();
-    public abstract void OnScoreUpOnFeed();
-    public abstract void OnScoreUpOnFallTo(Sumo sumo);
 
     IEnumerator WaitAfterCrush()
     {

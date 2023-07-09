@@ -1,5 +1,5 @@
-using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class SumoManager : Singleton<SumoManager>
@@ -64,6 +64,7 @@ public class SumoManager : Singleton<SumoManager>
     return radius;
   }
 
+
   public void SetAllAISumosTarget()
   {
     for (int i = 0; i < _sumoAIs.Count; i++)
@@ -71,6 +72,7 @@ public class SumoManager : Singleton<SumoManager>
       FindTargetSumo(_sumoAIs[i]);
     }
   }
+
 
   private void FindTargetSumo(AISumo aiSumo)
   {
@@ -84,6 +86,7 @@ public class SumoManager : Singleton<SumoManager>
     }
   }
 
+
   public void CheckSumoCountForWin()
   {
     if(_sumoCount == 1)
@@ -92,19 +95,36 @@ public class SumoManager : Singleton<SumoManager>
     }
   }
 
+
   public void MinusSumoCount()
   {
     _sumoCount--;
   }
+
 
   public void ResetSumoCount()
   {
     _sumoCount = _allSumos.Count;
   }
 
+
   public int GetCurrentSumoCount()
   {
     return _sumoCount;
+  }
+
+
+  public List<Sumo> GetSumosOrderedList()
+  {
+    var scoreOrderedSumoList = _allSumos.OrderByDescending(s => s._totalScore);
+    List<Sumo> newList = new();
+
+    foreach (Sumo score in scoreOrderedSumoList)
+    {
+      newList.Add(score);
+    }
+
+    return newList;
   }
 
 }

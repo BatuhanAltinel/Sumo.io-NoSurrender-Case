@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Feed : MonoBehaviour
@@ -20,10 +18,9 @@ public class Feed : MonoBehaviour
     {
         if(other.TryGetComponent<Sumo>(out Sumo sumo))
         {
-            // EventManager.OnFeeding.Invoke(sumo);
             sumo.OnScoreUpOnFeed();
             sumo.IncreasePushPower();
-            sumo.OnScaleUp();
+            sumo.ScaleUp();
             gameObject.SetActive(false);
         }
     }

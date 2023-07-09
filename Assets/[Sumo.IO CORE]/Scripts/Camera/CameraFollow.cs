@@ -4,9 +4,8 @@ using UnityEngine;
 
 public class CameraFollow : MonoBehaviour
 {
-    public Transform playerTransform;
-    public Vector3 offSet;
-    [SerializeField] float _followSpeed = 2f;
+    [SerializeField] private Transform playerTransform;
+    [SerializeField] private Vector3 offSet;
     
     void Awake()
     {
@@ -19,7 +18,6 @@ public class CameraFollow : MonoBehaviour
 
     void FollowPlayer()
     {
-        // transform.position = Vector3.MoveTowards(transform.position , playerTransform.position + offSet,_followSpeed * Time.deltaTime);
         transform.position = playerTransform.position + offSet;
     }
 

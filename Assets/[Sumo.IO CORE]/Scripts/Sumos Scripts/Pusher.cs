@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Pusher : MonoBehaviour
@@ -21,11 +19,10 @@ public class Pusher : MonoBehaviour
                 CalculateThePushForce(sumo);
 
                 sumo.OnPushedFrom(parentSumo,pushForce);
-                Debug.Log("calculated push");
                 return;
             }
+            
             sumo.OnPushedFrom(parentSumo);
-            Debug.Log("pushed");
         }
     }
 

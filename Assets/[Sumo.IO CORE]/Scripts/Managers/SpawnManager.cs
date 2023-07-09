@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class SpawnManager : MonoBehaviour
@@ -8,7 +6,7 @@ public class SpawnManager : MonoBehaviour
 
     [SerializeField] private GameObject _ground;
     private float _areaRadius;
-    private float _spawnRepeatTime = 5f;
+    [SerializeField] private float _spawnRepeatTime = 5f;
     private Vector3 _feedRotation = new Vector3(0,0,90);
 
 

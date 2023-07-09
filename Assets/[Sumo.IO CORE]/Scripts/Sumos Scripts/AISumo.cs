@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 
@@ -67,9 +65,9 @@ public class AISumo : Sumo
     }
     private void RotateToTheTarget()
     {
-        // Vector3 dir = Vector3.RotateTowards(_innerSumo.transform.forward, _targetSumo.transform.position, _RotateSpeed * Time.deltaTime, 0.0f);
-        _innerSumo.transform.rotation = Quaternion.LookRotation(_targetSumo._innerSumo.transform.position);
-        // _moveDirection = direction;
+        // _innerSumo.transform.rotation = Quaternion.LookRotation(_targetSumo._innerSumo.transform.position);
+        Vector3 direction = Vector3.RotateTowards(_innerSumo.transform.forward, _targetSumo._innerSumo.transform.position, _RotateSpeed * Time.deltaTime, 0.0f);
+        _innerSumo.transform.rotation = Quaternion.LookRotation(direction);
     }
 
     private void SetMoveDirection()

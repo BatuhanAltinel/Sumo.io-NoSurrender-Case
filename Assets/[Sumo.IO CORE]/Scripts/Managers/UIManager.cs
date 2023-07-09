@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 using TMPro;
 using DG.Tweening;
 
@@ -12,11 +13,16 @@ public class UIManager : MonoBehaviour
     [SerializeField] TextMeshProUGUI _gameTimeText;
     [SerializeField] TextMeshProUGUI _scoreText;
     [SerializeField] TextMeshProUGUI _sumoCountText;
+    [SerializeField] GameObject _playButton;
+    [SerializeField] GameObject _pauseButton;
+    [SerializeField] GameObject _pausedText;
+
 
     [Header("End Panel Elements")]
     [SerializeField] GameObject _endPanel;
     [SerializeField] TextMeshProUGUI _rankText;
     [SerializeField] TextMeshProUGUI _pushedByText;
+    [SerializeField] TextMeshProUGUI[] _scoreListTexts;
 
     [Header("Menu Panel")]
     [SerializeField] GameObject _menuPanel;
@@ -83,9 +89,11 @@ public class UIManager : MonoBehaviour
 
             case GameState.End: 
                 _endPanel.gameObject.SetActive(CloseAllPanelExceptThis());
+                UpdateScoreListText();
             break;
         }
     }
+
 
     void StartTimerSequence()
     {
@@ -109,6 +117,7 @@ public class UIManager : MonoBehaviour
         }
     }
 
+
     void MinusStartTimer()
     {
         _startTimerCount--;
@@ -128,10 +137,12 @@ public class UIManager : MonoBehaviour
         });
     }
 
+
     void DecreaseGameTimer()
     {
         if(_gameTimer <= 0)
-            EventManager.OnGameStateChanged(GameState.End);
+            StartCoroutine(WaitForEndState());
+            // EventManager.OnGameStateChanged(GameState.End);
         
         _gameTimer -= Time.deltaTime;
 
@@ -146,15 +157,18 @@ public class UIManager : MonoBehaviour
         _gameTimeText.text = second.ToString($"{minute}:00");
     }
 
+
     void ResetGameTimer()
     {
         _gameTimer = 75;
     }
 
+
     void ResetTotalScoreText()
     {
         _scoreText.text = "0";
     }
+
 
     bool CloseAllPanelExceptThis()
     {
@@ -165,23 +179,28 @@ public class UIManager : MonoBehaviour
         return true;
     }
 
+
     void UpdateScoreText(int totalScore)
     {
         _scoreText.text = totalScore.ToString();
     }
+
 
     void UpdateSumoCountText()
     {
         _sumoCountText.text = SumoManager.Instance.GetCurrentSumoCount().ToString();
     }
 
+
     void SetTextOnWin()
     {
         _rankText.text = "You are #" + SumoManager.Instance.GetCurrentSumoCount().ToString();
-        _pushedByText.text = "Congrats";
+        _pushedByText.text = "Congrats !!!";
 
         StartCoroutine(WaitForEndState());
     }
+
+
     void SetTextOnLose()
     {
         _rankText.text = "You are #" + SumoManager.Instance.GetCurrentSumoCount().ToString();
@@ -189,11 +208,45 @@ public class UIManager : MonoBehaviour
         StartCoroutine(WaitForEndState());
     }
 
+
+    void UpdateScoreListText()
+    {
+        List<Sumo> newSumoList = SumoManager.Instance.GetSumosOrderedList();
+
+        for (int i = 0; i < _scoreListTexts.Length; i++)
+        {
+            _scoreListTexts[i].text = (i+1) + " - " + newSumoList[i].GetSumoName(newSumoList[i]) + " - " + newSumoList[i]._totalScore;
+        }
+    }
+
+    public void ResumeTheGame()
+    {
+        _playButton.SetActive(false);
+        _pauseButton.SetActive(true);
+        _pausedText.SetActive(false);
+
+        Time.timeScale = 1;
+    }
+
+
+    public void PauseTheGame()
+    {
+        _playButton.SetActive(true);
+        _pauseButton.SetActive(false);
+        _pausedText.SetActive(true);
+
+        Time.timeScale = 0;
+    }
+
     IEnumerator WaitForEndState()
     {
-        
-        yield return new WaitForSeconds(2f);
+        InputManager.Instance.InputEnable = false;
+
+        yield return new WaitForSeconds(1f);
         EventManager.OnGameStateChanged(GameState.End);
+
+        yield return new WaitForSeconds(2f);
+        InputManager.Instance.InputEnable = true;
     }
 
 }

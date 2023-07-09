@@ -1,9 +1,15 @@
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
-public class InputManager : MonoBehaviour
+public class InputManager : Singleton<InputManager>
 {
+
+	public bool InputEnable { get; set; }
+
+	void Start()
+	{
+		InputEnable = true;
+	}
+
 	void Update()
 	{
 		Inputs();
@@ -11,7 +17,7 @@ public class InputManager : MonoBehaviour
 
 	void Inputs()
 	{
-		if(Input.GetMouseButton(0))
+		if(Input.GetMouseButton(0) && InputEnable)
 		{
 
 			if((GameManager.Instance.IsState(GameState.ReadyToStartGame)))
