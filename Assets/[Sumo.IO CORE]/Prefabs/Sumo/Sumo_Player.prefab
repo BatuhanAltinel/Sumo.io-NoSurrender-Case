@@ -377,7 +377,7 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.6, y: 0.1, z: 0.6}
+  m_Size: {x: 0.1, y: 0.1, z: 0.1}
   m_Center: {x: 0, y: 0.5, z: 0}
 --- !u!135 &6340775194952211996
 SphereCollider:
@@ -417,6 +417,8 @@ MonoBehaviour:
   _normalScale: {x: 0, y: 0, z: 0}
   _scaleFactor: 0.1
   _moveDirection: {x: 0, y: 0, z: 0}
+  _fallingDown: 0
+  _selectedAsTarget: 0
   _joystick: {fileID: 0}
 --- !u!1 &3655918771768826860
 GameObject:

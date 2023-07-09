@@ -36,33 +36,30 @@ public abstract class Sumo : MonoBehaviour
     public bool _fallingDown = false;
     public bool _selectedAsTarget = false;
 
-    void OnEnable()
-    {
-        EventManager.OnFeeding += OnScaleUp;
-        EventManager.OnGameStateChanged += SetAttributesOnState;
-    }
-
-    void OnDisable()
-    {
-        EventManager.OnFeeding -= OnScaleUp;
-        EventManager.OnGameStateChanged -= SetAttributesOnState;
-    }
+    
 
 
     protected virtual void Awake()
     {
         _rb = GetComponent<Rigidbody>();
-        _currentScale = _innerSumo.transform.localScale;
+        _currentScale = transform.localScale;
         _normalScale = _currentScale;
     }
 
 
-    void SetAttributesOnState(GameState state)
+    public void ResetAllAttributesOnState(GameState state)
     {
-        _nameText.text = _name;
-        _currentScale = _normalScale;
-        _fallingDown = false;
-        _selectedAsTarget = false;
+        if(GameManager.Instance.IsState(GameState.ReadyToStartGame))
+        {
+            _nameText.text = _name;
+            _currentScale = _normalScale;
+            transform.localScale = _normalScale;
+            _fallingDown = false;
+            _selectedAsTarget = false;
+            _totalScore = 0;
+            _rb.velocity = Vector3.zero;
+        }
+        
     }
 
     public void SetSumoName(string name)
@@ -79,10 +76,19 @@ public abstract class Sumo : MonoBehaviour
             _isCrushed = true;
             _rb.AddForce(sumo._moveDirection * sumo._pushForce , ForceMode.Impulse);
         
-            // ScaleShiftOnCrush();
             StartCoroutine(WaitAfterCrush());
         }
+    }
+
+    public void OnPushedFrom(Sumo sumo,float pushForce)
+    {
+        if(!_isCrushed)
+        {
+            _isCrushed = true;
+            _rb.AddForce(sumo._moveDirection * pushForce , ForceMode.Impulse);
         
+            StartCoroutine(WaitAfterCrush());
+        }
     }
 
 
@@ -93,41 +99,58 @@ public abstract class Sumo : MonoBehaviour
             _isCrushed = true;
             _rb.AddForce(-_moveDirection * _pushBackForce , ForceMode.Impulse);
 
-            ScaleShiftOnCrush();
+            LeanBack();
             StartCoroutine(WaitAfterCrush());
         }
     }
 
     
-    private void OnScaleUp(Sumo sumo)
+    public void OnScaleUp()
     {
         Vector3 _tempScale = _scaleFactor * Vector3.one;
         _currentScale += _tempScale;
 
-        sumo.transform.DOScale(_currentScale,0.3f).SetEase(Ease.OutBounce);
+        transform.DOScale(_currentScale,0.3f).SetEase(Ease.OutBounce);
     }
 
     public void IncreasePushPower()
     {
-        _pushForce += 5;
+        _pushForce += 2;
         Debug.Log("push force incresed.");
     }
 
-    private void ScaleShiftOnCrush()
+    public void ScaleShiftOnCrash()
     {
         Vector3 temp = _currentScale + new Vector3(0.25f,0,0.25f);
         transform.DOScale(temp,0.2f).SetEase(Ease.OutBounce).
         OnComplete(() => transform.DOScale(_currentScale,0.2f).SetEase(Ease.OutBounce));
     }
-    
 
+    public void SetSumoFallen()
+    {
+        _fallingDown = true;
+    }
+
+    void LeanBack()
+    {
+        _innerSumo.transform.DORotate(new Vector3(-12f,0,0),0.2f,RotateMode.LocalAxisAdd).
+        OnComplete(()=>  _innerSumo.transform.DORotate(new Vector3(12f,0,0),0.2f,RotateMode.LocalAxisAdd));
+    }
+
+    public float GetPushForce()
+    {
+        return _pushForce;
+    }
+
+    
     public abstract void Movement();
     public abstract void OnScoreUpOnFeed();
-    public abstract void OnScoreUpOnPush(Sumo sumo);
+    public abstract void OnScoreUpOnFallTo(Sumo sumo);
 
     IEnumerator WaitAfterCrush()
     {
-        yield return new WaitForSeconds(0.25f);
+        yield return new WaitForSeconds(0.3f);
+        _rb.velocity = Vector3.zero;
         _isCrushed = false;
     }
 

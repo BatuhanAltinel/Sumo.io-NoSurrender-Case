@@ -20,9 +20,10 @@ public class Feed : MonoBehaviour
     {
         if(other.TryGetComponent<Sumo>(out Sumo sumo))
         {
-            EventManager.OnFeeding.Invoke(sumo);
+            // EventManager.OnFeeding.Invoke(sumo);
             sumo.OnScoreUpOnFeed();
             sumo.IncreasePushPower();
+            sumo.OnScaleUp();
             gameObject.SetActive(false);
         }
     }

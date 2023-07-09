@@ -6,6 +6,8 @@ public enum GameState
     ReadyToStartGame, 
     OnTimer,
     InGame,
+    Win,
+    Lose,
     End 
 
 }

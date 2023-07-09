@@ -1,5 +1,5 @@
 using UnityEngine;
-using UnityEngine.UI;
+using System.Collections;
 using TMPro;
 using DG.Tweening;
 
@@ -28,19 +28,22 @@ public class UIManager : MonoBehaviour
     void OnEnable()
     {
         EventManager.OnGameStateChanged += UpdateUI;    
-        EventManager.OnScoreUpdate += UpdateScoreText;    
+        EventManager.OnScoreUpdate += UpdateScoreText;   
+        EventManager.OnSumoFallDown += UpdateSumoCount; 
     }
 
     void OnDisable()
     {
         EventManager.OnGameStateChanged -= UpdateUI;
         EventManager.OnScoreUpdate -= UpdateScoreText;
+        EventManager.OnSumoFallDown -= UpdateSumoCount;
     }
 
 
     void Start()
     {
-        ResetTotalSocreText();
+        ResetTotalScoreText();
+        UpdateSumoCount();
     }
 
     void Update()
@@ -55,10 +58,10 @@ public class UIManager : MonoBehaviour
         switch (state)
         {
             case GameState.ReadyToStartGame:
+                ResetTotalScoreText();
                 ResetGameTimer();
+                SumoManager.Instance.ResetSumoCount();
                 _menuPanel.gameObject.SetActive(CloseAllPanelExceptThis());
-                // StartTimerSequence();
-
             break;
 
             case GameState.OnTimer:
@@ -67,7 +70,14 @@ public class UIManager : MonoBehaviour
 
             case GameState.InGame:
                 _gamePanel.gameObject.SetActive(CloseAllPanelExceptThis());
-                
+            break;
+
+            case GameState.Win:
+                SetTextOnWin();
+            break;
+
+             case GameState.Lose:
+                SetTextOnLose();
             break;
 
             case GameState.End: 
@@ -140,7 +150,7 @@ public class UIManager : MonoBehaviour
         _gameTimer = 75;
     }
 
-    void ResetTotalSocreText()
+    void ResetTotalScoreText()
     {
         _scoreText.text = "0";
     }
@@ -157,6 +167,32 @@ public class UIManager : MonoBehaviour
     void UpdateScoreText(int totalScore)
     {
         _scoreText.text = totalScore.ToString();
+    }
+
+    void UpdateSumoCount()
+    {
+        _sumoCountText.text = SumoManager.Instance.GetCurrentSumoCount().ToString();
+    }
+
+    void SetTextOnWin()
+    {
+        _rankText.text = "You are #" + SumoManager.Instance.GetCurrentSumoCount().ToString();
+        _pushedByText.text = "Congrats";
+
+        StartCoroutine(WaitForEndState());
+    }
+    void SetTextOnLose()
+    {
+        _rankText.text = "You are #" + SumoManager.Instance.GetCurrentSumoCount().ToString();
+        _pushedByText.text = "Pushed by AI";
+        StartCoroutine(WaitForEndState());
+    }
+
+    IEnumerator WaitForEndState()
+    {
+        
+        yield return new WaitForSeconds(2f);
+        EventManager.OnGameStateChanged(GameState.End);
     }
 
 }

@@ -12,12 +12,13 @@ public class PlayerSumo : Sumo
     void OnEnable()
     {
         EventManager.OnGameStateChanged += ResetPoisitionOnState;
+        EventManager.OnGameStateChanged += ResetAllAttributesOnState;
     }
     void OnDisable()
     {
         EventManager.OnGameStateChanged -= ResetPoisitionOnState;
+        EventManager.OnGameStateChanged -= ResetAllAttributesOnState;
     }
-
 
     protected override void Awake()
     {
@@ -47,7 +48,7 @@ public class PlayerSumo : Sumo
         _rb.MovePosition(_rb.position + _moveDirection);
     }
 
-    public override void OnScoreUpOnPush(Sumo sumo)
+    public override void OnScoreUpOnFallTo(Sumo sumo)
     {
         
     }
@@ -66,7 +67,7 @@ public class PlayerSumo : Sumo
             _feedScoreText.transform.gameObject.SetActive(false);
             _feedScoreText.transform.localPosition = new Vector3(0f,0.6f,0f);
 
-            EventManager.OnScoreUpdate.Invoke(this._totalScore);
+            EventManager.OnScoreUpdate.Invoke(_totalScore);
         });
 
     }
@@ -76,5 +77,7 @@ public class PlayerSumo : Sumo
         if(GameManager.Instance.IsState(GameState.ReadyToStartGame))
             transform.position = _startPosition;
     }
+
+
 
 }

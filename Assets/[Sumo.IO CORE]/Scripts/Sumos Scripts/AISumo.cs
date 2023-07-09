@@ -9,7 +9,14 @@ public class AISumo : Sumo
 
 
 
-
+    void OnEnable()
+    {
+        EventManager.OnGameStateChanged += ResetAllAttributesOnState;
+    }
+    void OnDisable()
+    {
+        EventManager.OnGameStateChanged -= ResetAllAttributesOnState;
+    }
     protected override void Awake()
     {
         base.Awake();
@@ -23,16 +30,16 @@ public class AISumo : Sumo
 
     public override void Movement()
     {
-        if(GameManager.Instance.IsState(GameState.InGame) && !_isCrushed)
+        if(GameManager.Instance.IsState(GameState.InGame) && !_isCrushed && !_fallingDown)
         {
-           RotateToTheTarget();
-        //    _rb.MovePosition(_rb.position + _moveDirection);
-            transform.Translate(-_moveDirection * _moveSpeed * Time.deltaTime);
+            RotateToTheTarget();
+            SetMoveDirection();
+            transform.Translate(_moveDirection * _moveSpeed * Time.deltaTime);
         }
     }
 
 
-    public override void OnScoreUpOnPush(Sumo sumo)
+    public override void OnScoreUpOnFallTo(Sumo sumo)
     {
         
     }
@@ -60,8 +67,15 @@ public class AISumo : Sumo
     }
     private void RotateToTheTarget()
     {
-        Vector3 direction = Vector3.RotateTowards(_innerSumo.transform.forward, _targetSumo._moveDirection, _RotateSpeed * Time.deltaTime, 0.0f);
-        _innerSumo.transform.rotation = Quaternion.LookRotation(_targetSumo.transform.position);
-        _moveDirection = direction;
+        // Vector3 dir = Vector3.RotateTowards(_innerSumo.transform.forward, _targetSumo.transform.position, _RotateSpeed * Time.deltaTime, 0.0f);
+        _innerSumo.transform.rotation = Quaternion.LookRotation(_targetSumo._innerSumo.transform.position);
+        // _moveDirection = direction;
     }
+
+    private void SetMoveDirection()
+    {
+        Vector3 dir = _targetSumo.transform.position - transform.position;
+        _moveDirection = dir.normalized;
+    }
+
 }

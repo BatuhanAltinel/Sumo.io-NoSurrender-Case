@@ -2,11 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SumoManager : MonoBehaviour
+public class SumoManager : Singleton<SumoManager>
 {
   [SerializeField] List<AISumo> _sumoAIs = new();
   [SerializeField] List<Sumo> _allSumos = new();
   [SerializeField] GameObject _ground;
+  int _sumoCount;
   float _areaRadius;
 
 
@@ -28,6 +29,8 @@ public class SumoManager : MonoBehaviour
 
     SetAIsNames();
     SetAllAISumosTarget();
+
+    _sumoCount = _allSumos.Count;
   }
 
 
@@ -61,7 +64,7 @@ public class SumoManager : MonoBehaviour
     return radius;
   }
 
-  void SetAllAISumosTarget()
+  public void SetAllAISumosTarget()
   {
     for (int i = 0; i < _sumoAIs.Count; i++)
     {
@@ -79,6 +82,29 @@ public class SumoManager : MonoBehaviour
         return;
       }
     }
+  }
+
+  public void CheckSumoCountForWin()
+  {
+    if(_sumoCount == 1)
+    {
+      EventManager.OnGameStateChanged(GameState.Win);
+    }
+  }
+
+  public void MinusSumoCount()
+  {
+    _sumoCount--;
+  }
+
+  public void ResetSumoCount()
+  {
+    _sumoCount = _allSumos.Count;
+  }
+
+  public int GetCurrentSumoCount()
+  {
+    return _sumoCount;
   }
 
 }
