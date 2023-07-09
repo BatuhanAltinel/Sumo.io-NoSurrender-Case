@@ -6,15 +6,32 @@ public class PlayerSumo : Sumo
 {
 
     [SerializeField] private FloatingJoystick _joystick;
+    private Vector3 _startPosition;
 
+
+    void OnEnable()
+    {
+        EventManager.OnGameStateChanged += ResetPoisitionOnState;
+    }
+    void OnDisable()
+    {
+        EventManager.OnGameStateChanged -= ResetPoisitionOnState;
+    }
+
+
+    protected override void Awake()
+    {
+        base.Awake();
+        _startPosition = transform.position;
+    }
 
     void Update()
     {
         if(GameManager.Instance.IsState(GameState.InGame) && !_isCrushed)
-            MoveForward();
+            Movement();
     }
 
-    public override void MoveForward()
+    public override void Movement()
     {
         _moveDirection = Vector3.zero;
         _moveDirection.x = _joystick.Horizontal * _moveSpeed * Time.deltaTime;
@@ -52,7 +69,12 @@ public class PlayerSumo : Sumo
             EventManager.OnScoreUpdate.Invoke(this._totalScore);
         });
 
-       
+    }
+
+    void ResetPoisitionOnState(GameState state)
+    {
+        if(GameManager.Instance.IsState(GameState.ReadyToStartGame))
+            transform.position = _startPosition;
     }
 
 }

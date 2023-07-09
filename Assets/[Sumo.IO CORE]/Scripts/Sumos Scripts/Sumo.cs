@@ -6,7 +6,7 @@ using System.Collections;
 public abstract class Sumo : MonoBehaviour
 {
     protected Rigidbody _rb;
-    [SerializeField] protected GameObject _innerSumo;
+    public GameObject _innerSumo;
 
     [Header("Sumo Canvas Atrributes")]
     [SerializeField] protected string _name;
@@ -33,16 +33,19 @@ public abstract class Sumo : MonoBehaviour
     public Vector3 _moveDirection;
 
     protected bool _isCrushed;
-
+    public bool _fallingDown = false;
+    public bool _selectedAsTarget = false;
 
     void OnEnable()
     {
         EventManager.OnFeeding += OnScaleUp;
+        EventManager.OnGameStateChanged += SetAttributesOnState;
     }
 
     void OnDisable()
     {
         EventManager.OnFeeding -= OnScaleUp;
+        EventManager.OnGameStateChanged -= SetAttributesOnState;
     }
 
 
@@ -53,15 +56,13 @@ public abstract class Sumo : MonoBehaviour
         _normalScale = _currentScale;
     }
 
-    protected virtual void Start()
-    {
-        SetOnStart();
-    }
 
-    void SetOnStart()
+    void SetAttributesOnState(GameState state)
     {
         _nameText.text = _name;
         _currentScale = _normalScale;
+        _fallingDown = false;
+        _selectedAsTarget = false;
     }
 
     public void SetSumoName(string name)
@@ -78,7 +79,7 @@ public abstract class Sumo : MonoBehaviour
             _isCrushed = true;
             _rb.AddForce(sumo._moveDirection * sumo._pushForce , ForceMode.Impulse);
         
-            ScaleShiftOnCrush();
+            // ScaleShiftOnCrush();
             StartCoroutine(WaitAfterCrush());
         }
         
@@ -120,7 +121,7 @@ public abstract class Sumo : MonoBehaviour
     }
     
 
-    public abstract void MoveForward();
+    public abstract void Movement();
     public abstract void OnScoreUpOnFeed();
     public abstract void OnScoreUpOnPush(Sumo sumo);
 

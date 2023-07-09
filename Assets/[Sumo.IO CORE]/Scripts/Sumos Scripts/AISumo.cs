@@ -5,17 +5,32 @@ using DG.Tweening;
 
 public class AISumo : Sumo
 {
-    [SerializeField] Sumo _targetSumo;
+    public Sumo _targetSumo;
+
+
+
 
     protected override void Awake()
     {
         base.Awake();
     }
     
-    public override void MoveForward()
+    void Update()
     {
-
+        Movement();
     }
+
+
+    public override void Movement()
+    {
+        if(GameManager.Instance.IsState(GameState.InGame) && !_isCrushed)
+        {
+           RotateToTheTarget();
+        //    _rb.MovePosition(_rb.position + _moveDirection);
+            transform.Translate(-_moveDirection * _moveSpeed * Time.deltaTime);
+        }
+    }
+
 
     public override void OnScoreUpOnPush(Sumo sumo)
     {
@@ -36,5 +51,17 @@ public class AISumo : Sumo
             _feedScoreText.transform.localPosition = new Vector3(0f,0.6f,0f);
         });
 
+    }
+
+    public void SetTargetSumo(Sumo sumo)
+    {
+        _targetSumo = sumo;
+        _targetSumo._selectedAsTarget = true;
+    }
+    private void RotateToTheTarget()
+    {
+        Vector3 direction = Vector3.RotateTowards(_innerSumo.transform.forward, _targetSumo._moveDirection, _RotateSpeed * Time.deltaTime, 0.0f);
+        _innerSumo.transform.rotation = Quaternion.LookRotation(_targetSumo.transform.position);
+        _moveDirection = direction;
     }
 }
