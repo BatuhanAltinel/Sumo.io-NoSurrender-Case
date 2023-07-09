@@ -2,7 +2,7 @@
  Case study for NoSurrender
 
 # Game Play Video
-Oynanış video linki: https://drive.google.com/drive/folders/1SYWYwP3dnUk7vUu6gOKAyVMbBhhhzzJG?usp=sharing
+Game play video link: https://drive.google.com/drive/folders/1SYWYwP3dnUk7vUu6gOKAyVMbBhhhzzJG?usp=sharing
 
 # Images from game
 
